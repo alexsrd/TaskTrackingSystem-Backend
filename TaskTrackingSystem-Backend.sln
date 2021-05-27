@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackingSystem.Web", "TaskTrackingSystem.Web\TaskTrackingSystem.Web.csproj", "{FCAFAD27-D32D-4047-B386-43D2844FA904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackingSystem.BLL", "TaskTrackingSystem.BLL\TaskTrackingSystem.BLL.csproj", "{8F2CF8B8-E451-442D-84FA-A9E01CDF2553}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackingSystem.DAL", "TaskTrackingSystem.DAL\TaskTrackingSystem.DAL.csproj", "{CD4BA71B-3888-406D-9296-9CBD809E4BDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCAFAD27-D32D-4047-B386-43D2844FA904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCAFAD27-D32D-4047-B386-43D2844FA904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCAFAD27-D32D-4047-B386-43D2844FA904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCAFAD27-D32D-4047-B386-43D2844FA904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F2CF8B8-E451-442D-84FA-A9E01CDF2553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2CF8B8-E451-442D-84FA-A9E01CDF2553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2CF8B8-E451-442D-84FA-A9E01CDF2553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2CF8B8-E451-442D-84FA-A9E01CDF2553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD4BA71B-3888-406D-9296-9CBD809E4BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD4BA71B-3888-406D-9296-9CBD809E4BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD4BA71B-3888-406D-9296-9CBD809E4BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD4BA71B-3888-406D-9296-9CBD809E4BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
