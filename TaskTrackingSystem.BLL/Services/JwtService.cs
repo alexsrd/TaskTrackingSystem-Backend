@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TaskTrackingSystem.BLL.Services.Interfaces;
+using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.BLL.Services
 {
@@ -22,12 +23,14 @@ namespace TaskTrackingSystem.BLL.Services
             _jwtIssuer = jwtIssuer;
         }
 
-        public string GenerateJwtToken(string id)
+        public string GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {
             var claims = new List<Claim>
             {
-                new Claim("UserID", id)
+                new Claim("UserID", user.Id)
             };
+            foreach (var role in roles)
+                claims.Add(new Claim("Role", role));
 
             var key = new SymmetricSecurityKey(_jwtKey);
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskTrackingSystem.DAL.EF;
 
 namespace TaskTrackingSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210529142747_AddEntities")]
+    partial class AddEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.Property<int>("ProjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ProjectsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UserProject");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -63,22 +50,22 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6523b0ff-c8c5-4eeb-bbd7-b7999c1074bc",
-                            ConcurrencyStamp = "e18e8213-a99f-4da4-9903-96fad3e76d5a",
+                            Id = "3ccc9f34-600f-4ecf-bcb1-d45c83971ff7",
+                            ConcurrencyStamp = "d159afda-bda6-4e1e-80a7-6445498cbda5",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "62d99878-b51d-408e-8e76-2150bd3d232d",
-                            ConcurrencyStamp = "cc41bfd7-ed91-4221-834d-95d1c34408dc",
+                            Id = "343c32ed-f71d-46c0-a864-c27d762bedbd",
+                            ConcurrencyStamp = "b2893093-af7b-4719-adab-611cf9757c5a",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "436ca37a-9d6b-470b-869a-16856172538c",
-                            ConcurrencyStamp = "da4376b2-44a1-468d-a05a-8efd4a1ecfa0",
+                            Id = "14f0a1bd-4f11-4e1a-a086-202e3ea8dc34",
+                            ConcurrencyStamp = "02414c85-4da7-4919-8c25-4ed5aaa715f1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -171,8 +158,8 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "91a4c558-7e7d-4e68-a2d4-5c736161ac13",
-                            RoleId = "436ca37a-9d6b-470b-869a-16856172538c"
+                            UserId = "41870281-9f68-4d13-9c32-0ca9ab0a8416",
+                            RoleId = "14f0a1bd-4f11-4e1a-a086-202e3ea8dc34"
                         });
                 });
 
@@ -240,8 +227,8 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -271,17 +258,18 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "91a4c558-7e7d-4e68-a2d4-5c736161ac13",
+                            Id = "41870281-9f68-4d13-9c32-0ca9ab0a8416",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ab7ffdff-9143-4a53-8ef2-25bba4c927ef",
+                            ConcurrencyStamp = "dec2a6d7-040b-4387-b0a4-937be6132cac",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKYV3VhEeQcJZ3dL+b3lIwuSGLC9gxX5NImuC5/B6rEcuswHyNZBULi6A3dT0os7JQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPj216XR0zG3etWrNpWtosjkXthdy5qQM/GwZp/COLl3s9rrQU/UOimGhEz8uBlsyA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "08129ce2-1ec3-4c64-8011-c0aaa3320870",
+                            Role = 0,
+                            SecurityStamp = "fa1dd3f3-5545-4f5e-917a-2f95ee093f55",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -321,8 +309,8 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Progress")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Progress")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
@@ -342,19 +330,19 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("ApplicationUserProject", b =>
+            modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.UserProject", b =>
                 {
-                    b.HasOne("TaskTrackingSystem.DAL.Entities.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
-                    b.HasOne("TaskTrackingSystem.DAL.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProject");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -425,14 +413,37 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.UserProject", b =>
+                {
+                    b.HasOne("TaskTrackingSystem.DAL.Entities.Project", "Project")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskTrackingSystem.DAL.Entities.ApplicationUser", "User")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Tasks");
+
+                    b.Navigation("UserProjects");
                 });
 
             modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.Project", b =>
                 {
                     b.Navigation("Tasks");
+
+                    b.Navigation("UserProjects");
                 });
 #pragma warning restore 612, 618
         }

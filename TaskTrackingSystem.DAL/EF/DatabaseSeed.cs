@@ -24,6 +24,7 @@ namespace TaskTrackingSystem.DAL.EF
                 UserName = "admin",
                 NormalizedUserName = "ADMIN",
                 Email = "admin@gmail.com",
+                NormalizedEmail = "ADMIN@GMAIL.COM",
                 PasswordHash = hasher.HashPassword(null, "admin")
             };
             

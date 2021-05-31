@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskTrackingSystem.DAL.EF;
 
 namespace TaskTrackingSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210529202709_ChangeEnumtoString")]
+    partial class ChangeEnumtoString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.Property<int>("ProjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ProjectsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UserProject");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -63,22 +50,22 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6523b0ff-c8c5-4eeb-bbd7-b7999c1074bc",
-                            ConcurrencyStamp = "e18e8213-a99f-4da4-9903-96fad3e76d5a",
+                            Id = "67819482-a3b6-46fd-a7f3-2f922e6517dc",
+                            ConcurrencyStamp = "54cf493e-729f-4352-8b2c-ea9e8720f6c9",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "62d99878-b51d-408e-8e76-2150bd3d232d",
-                            ConcurrencyStamp = "cc41bfd7-ed91-4221-834d-95d1c34408dc",
+                            Id = "bdc1025c-ee6b-4131-8625-16006336dc5b",
+                            ConcurrencyStamp = "9285663f-0abb-42c4-82a0-afed5cd69649",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "436ca37a-9d6b-470b-869a-16856172538c",
-                            ConcurrencyStamp = "da4376b2-44a1-468d-a05a-8efd4a1ecfa0",
+                            Id = "3cbdeb58-315d-46d6-8ee2-4f65bf9b2c50",
+                            ConcurrencyStamp = "c2541e66-bd13-40cc-bb62-573f1e501979",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -171,8 +158,8 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "91a4c558-7e7d-4e68-a2d4-5c736161ac13",
-                            RoleId = "436ca37a-9d6b-470b-869a-16856172538c"
+                            UserId = "28f9cd10-29b1-4bb6-a9ad-7f84853fb346",
+                            RoleId = "3cbdeb58-315d-46d6-8ee2-4f65bf9b2c50"
                         });
                 });
 
@@ -271,17 +258,17 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "91a4c558-7e7d-4e68-a2d4-5c736161ac13",
+                            Id = "28f9cd10-29b1-4bb6-a9ad-7f84853fb346",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ab7ffdff-9143-4a53-8ef2-25bba4c927ef",
+                            ConcurrencyStamp = "b0ed7e4e-a071-447f-96ab-6ab658b3d744",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKYV3VhEeQcJZ3dL+b3lIwuSGLC9gxX5NImuC5/B6rEcuswHyNZBULi6A3dT0os7JQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOtggh9+i8fSAWiXnF0IE73g/Ai/PIJE5flvltdYjSIDwpCejoNHvpXs5jaoAsCnLw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "08129ce2-1ec3-4c64-8011-c0aaa3320870",
+                            SecurityStamp = "97e018cd-6473-46b0-85e7-9192b6e3845e",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -342,19 +329,19 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("ApplicationUserProject", b =>
+            modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.UserProject", b =>
                 {
-                    b.HasOne("TaskTrackingSystem.DAL.Entities.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
-                    b.HasOne("TaskTrackingSystem.DAL.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProject");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -425,14 +412,37 @@ namespace TaskTrackingSystem.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.UserProject", b =>
+                {
+                    b.HasOne("TaskTrackingSystem.DAL.Entities.Project", "Project")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskTrackingSystem.DAL.Entities.ApplicationUser", "User")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Tasks");
+
+                    b.Navigation("UserProjects");
                 });
 
             modelBuilder.Entity("TaskTrackingSystem.DAL.Entities.Project", b =>
                 {
                     b.Navigation("Tasks");
+
+                    b.Navigation("UserProjects");
                 });
 #pragma warning restore 612, 618
         }

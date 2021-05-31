@@ -8,4 +8,8 @@
       <ProjectReference Include="..\TaskTrackingSystem.DAL\TaskTrackingSystem.DAL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+    </ItemGroup>
+
 </Project>

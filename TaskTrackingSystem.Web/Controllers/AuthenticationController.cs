@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
-using TaskTrackingSystem.DAL;
 
 namespace TaskTrackingSystem.Web.Controllers
 {
@@ -12,14 +11,14 @@ namespace TaskTrackingSystem.Web.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
-        
         public AuthenticationController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
 
+        [Route("register")]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromQuery]RegisterDto registerUser)
+        public async Task<IActionResult> Register(RegisterDto registerUser)
         {
             try
             {
@@ -36,8 +35,9 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult<string>> Login([FromQuery]LoginDto loginUser)
+        [Route("login")]
+        [HttpPost]
+        public async Task<ActionResult<string>> Login(LoginDto loginUser)
         {
             var resultToken = await _authenticationService.Login(loginUser);
             if (resultToken != String.Empty)

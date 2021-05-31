@@ -1,13 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.DAL.Entities;
+using TaskTrackingSystem.DAL.Repositories;
+using TaskTrackingSystem.DAL.Repositories.Interfaces;
 
 namespace TaskTrackingSystem.DAL
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        public UserManager<ApplicationUser> UserManager { get;}
-        public RoleManager<IdentityRole> RoleManager { get;}
-        Task SaveAsync();
+        UserManager<ApplicationUser> UserManager { get;}
+        RoleManager<IdentityRole> RoleManager { get;} 
+        ITaskRepository Tasks { get; }
+        IProjectRepository Projects { get; }
+        IUserRepository Users { get; }
+        void Save();
     }
 }

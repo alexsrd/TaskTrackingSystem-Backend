@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.BLL.DTOs;
@@ -22,16 +21,28 @@ namespace TaskTrackingSystem.BLL.Services
 
         public async Task<IdentityResult> Register(RegisterDto registerUser)
         {
-            var user = new ApplicationUser() {Email = registerUser.Email, UserName = registerUser.UserName};
+            var possibleUser = await _database.UserManager.FindByEmailAsync(registerUser.Email);
+            if (possibleUser!= null)
+            {
+                return IdentityResult.Failed(new IdentityError(){Description = $"User with email {registerUser.Email} already exists"});
+            }
+            var user = new ApplicationUser
+            {
+                Email = registerUser.Email, 
+                Name = registerUser.Name,
+                Surname = registerUser.Surname,
+                Role = "User",
+                UserName = registerUser.Email.Substring(0,registerUser.Email.IndexOf("@"))+registerUser.Surname[0]
+            };
 
             var result = await _database.UserManager.CreateAsync(user, registerUser.Password);
-            
+
             if (result.Succeeded)
             {
-                await _database.SaveAsync();
-                result = await _database.UserManager.AddToRoleAsync(user, "USER");
+                _database.Save();
+                result = await _database.UserManager.AddToRoleAsync(user,"USER");
             }
-            await _database.SaveAsync();
+            _database.Save();
             return result;
         }
 
@@ -40,7 +51,8 @@ namespace TaskTrackingSystem.BLL.Services
             var user = await _database.UserManager.FindByEmailAsync(loginUser.Email);
             if (user != null && await _database.UserManager.CheckPasswordAsync(user, loginUser.Password))
             {
-                return _jwtService.GenerateJwtToken(user.Id);
+                var userRoles = await _database.UserManager.GetRolesAsync(user);
+                return _jwtService.GenerateJwtToken(user,userRoles);
             }
 
             return String.Empty;

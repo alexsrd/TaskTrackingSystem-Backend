@@ -30,10 +30,14 @@ namespace TaskTrackingSystem.Web
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin",
-                    builder => builder.AllowAnyOrigin());
+                    builder=>builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
             });
-            
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -51,6 +55,8 @@ namespace TaskTrackingSystem.Web
             services.AddJwtAuthentication(Configuration);
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
@@ -69,6 +75,7 @@ namespace TaskTrackingSystem.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowOrigin");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
