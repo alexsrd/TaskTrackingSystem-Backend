@@ -10,7 +10,6 @@ using TaskTrackingSystem.BLL.Services.Interfaces;
 namespace TaskTrackingSystem.Web.Controllers
 {
     [ApiController]
-    
     [Route("api/projects")]
     public class ProjectController : ControllerBase
     {
@@ -34,6 +33,13 @@ namespace TaskTrackingSystem.Web.Controllers
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             return Ok(await _projectService.GetUserProjects(userId));
+        }
+        
+        [Authorize(Roles = "User,Manager,Admin")]
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProjectDto>> GetProject(int id)
+        {
+            return Ok(await _projectService.GetProject(id));
         }
     }
 }

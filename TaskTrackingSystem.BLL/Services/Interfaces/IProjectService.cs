@@ -8,5 +8,6 @@ namespace TaskTrackingSystem.BLL.Services.Interfaces
     {
         Task<ProjectDto> CreateProject(string currentUserId,ProjectDto project);
         Task<IEnumerable<ProjectDto>> GetUserProjects(string id);
+        Task<ProjectDto> GetProject(int id);
     }
 }

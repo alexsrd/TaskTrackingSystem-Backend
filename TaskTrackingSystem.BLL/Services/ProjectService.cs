@@ -52,8 +52,15 @@ namespace TaskTrackingSystem.BLL.Services
             {
                 projectDtos.Add(_mapper.Map<ProjectDto>(project));
             }
-
             return projectDtos;
         }
+
+        public async Task<ProjectDto> GetProject(int id)
+        {
+            var project = await _database.Projects.GetFirstWhereAsync(p => p.Id == id);
+            var projectDto = _mapper.Map<ProjectDto>(project);
+            return projectDto;
+        }
+        
     }
 }

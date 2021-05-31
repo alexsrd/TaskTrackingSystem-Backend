@@ -6,7 +6,9 @@ namespace TaskTrackingSystem.BLL.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserProfileDto>> GetUsersAsync();
-        Task<UserProfileDto> ChangeUserRole(UserProfileDto user);
+        Task<IEnumerable<UserDto>> GetUsersAsync();
+        Task<UserDto> ChangeUserRole(UserDto user);
+
+        Task<IEnumerable<UserDto>> GetProjectUsers(int projectId);
     }
 }

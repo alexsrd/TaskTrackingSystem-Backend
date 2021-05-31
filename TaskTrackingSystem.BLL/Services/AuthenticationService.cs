@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
@@ -17,6 +18,7 @@ namespace TaskTrackingSystem.BLL.Services
         {
             _database = database;
             _jwtService = jwtService;
+
         }
 
         public async Task<IdentityResult> Register(RegisterDto registerUser)
@@ -31,6 +33,7 @@ namespace TaskTrackingSystem.BLL.Services
                 Email = registerUser.Email, 
                 Name = registerUser.Name,
                 Surname = registerUser.Surname,
+                FullName = registerUser.Name + " " + registerUser.Surname,
                 Role = "User",
                 UserName = registerUser.Email.Substring(0,registerUser.Email.IndexOf("@"))+registerUser.Surname[0]
             };

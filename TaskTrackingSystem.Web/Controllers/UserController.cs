@@ -7,8 +7,7 @@ using TaskTrackingSystem.BLL.Services.Interfaces;
 
 namespace TaskTrackingSystem.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -17,16 +16,25 @@ namespace TaskTrackingSystem.Web.Controllers
         {
             _userService = userService;
         }
+        
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IEnumerable<UserProfileDto>> Get()
+        public async Task<IEnumerable<UserDto>> Get()
         {
             return await _userService.GetUsersAsync();
         }
 
         [HttpPut]
-        public async Task<ActionResult<UserProfileDto>> Update(UserProfileDto user)
+        public async Task<ActionResult<UserDto>> Update(UserDto user)
         {
             return Ok(await _userService.ChangeUserRole(user));
+        }
+
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpGet("{projectId:int}")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetProjectUsers(int projectId)
+        {
+            return Ok(await _userService.GetProjectUsers(projectId));
         }
     }
 }
