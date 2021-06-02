@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;
 using TaskTrackingSystem.DAL.Repositories.Interfaces;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskTrackingSystem.DAL.Repositories
 {
@@ -21,5 +22,6 @@ namespace TaskTrackingSystem.DAL.Repositories
             return await _context.Users
                 .Include(u => u.Projects).ToListAsync();
         }
+        
     }
 }

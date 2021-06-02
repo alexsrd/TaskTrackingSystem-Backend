@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TaskTrackingSystem.BLL.DTOs;
@@ -26,6 +28,20 @@ namespace TaskTrackingSystem.Web.Controllers
         public async Task<ActionResult<TaskDto>> PostTask(int projectId,[FromBody]TaskDto task)
         {
             return Ok(await _taskService.CreateTask(projectId, task));
+        }
+
+        [HttpGet("user-tasks/{projectId:int}")]
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetUserTasks(int projectId)
+        {
+            try
+            {
+                var userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return Ok(await _taskService.GetUserTasksOnProject(userId, projectId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

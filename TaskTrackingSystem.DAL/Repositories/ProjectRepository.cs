@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;
 using TaskTrackingSystem.DAL.Repositories.Interfaces;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskTrackingSystem.DAL.Repositories
 {
@@ -24,6 +25,11 @@ namespace TaskTrackingSystem.DAL.Repositories
             var projectsWithUsers = await _context.Projects.Include(p => p.Users).ToListAsync();
             var userProjects = projectsWithUsers.Where(p => p.Users.Exists(u => u.Id == id));
             return userProjects.ToList();
+        }
+
+        public async Task<Project> GetProjectWithUsers(int projectId)
+        {
+            return await _context.Projects.Include(p => p.Users).FirstOrDefaultAsync(p => p.Id == projectId);
         }
     }
 }

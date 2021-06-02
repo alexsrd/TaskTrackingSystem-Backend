@@ -64,5 +64,18 @@ namespace TaskTrackingSystem.BLL.Services
 
             return userDtos;
         }
+
+        public async Task<UserDto> AddUserToProject(int projectId,string email)
+        {
+            var user = await _database.UserManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var project = await _database.Projects.GetProjectWithUsers(projectId);
+                project.Users.Add(user);
+                await _database.Projects.UpdateAsync(project);
+            }
+
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }

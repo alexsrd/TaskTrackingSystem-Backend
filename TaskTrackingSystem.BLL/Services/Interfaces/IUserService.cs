@@ -10,5 +10,7 @@ namespace TaskTrackingSystem.BLL.Services.Interfaces
         Task<UserDto> ChangeUserRole(UserDto user);
 
         Task<IEnumerable<UserDto>> GetProjectUsers(int projectId);
+        Task<UserDto> AddUserToProject(int projectId, string email);
+        
     }
 }

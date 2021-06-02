@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,24 +18,59 @@ namespace TaskTrackingSystem.Web.Controllers
             _userService = userService;
         }
         
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet]
-        public async Task<IEnumerable<UserDto>> Get()
+        public async Task<ActionResult<IEnumerable<UserDto>>> Get()
         {
-            return await _userService.GetUsersAsync();
+            try
+            {
+                return Ok(await _userService.GetUsersAsync());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<UserDto>> Update(UserDto user)
         {
-            return Ok(await _userService.ChangeUserRole(user));
+            try
+            {
+                return Ok(await _userService.ChangeUserRole(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpGet("{projectId:int}")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetProjectUsers(int projectId)
         {
-            return Ok(await _userService.GetProjectUsers(projectId));
+            try
+            {
+                return Ok(await _userService.GetProjectUsers(projectId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        
+        [HttpPut("{projectId:int}")]
+        public async Task<ActionResult<UserDto>> AddToProject(int projectId, string email)
+        {
+            try
+            {
+                return Ok(await _userService.AddUserToProject(projectId, email));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using TaskTrackingSystem.BLL.DTOs;
@@ -38,10 +39,25 @@ namespace TaskTrackingSystem.BLL.Services
             var taskTmp = _mapper.Map<Task>(task);
             taskTmp.ProjectId = projectId;
             taskTmp.User = user;
+            if (user != null)
+            {
+                taskTmp.Progress = "Assigned";
+            }
             var createdTask =  await _database.Tasks.InsertAsync(taskTmp);
             return _mapper.Map<TaskDto>(createdTask);
         }
-        
+
+        public async Task<IEnumerable<TaskDto>> GetUserTasksOnProject(string userId, int projectId)
+        {
+            var tasks = await _database.Tasks.GetProjectTasksWithUsers(projectId);
+            var userTasks = tasks.Where(t => t.UserId == userId);
+            var userTasksDto = new List<TaskDto>();
+            foreach (var task in userTasks)
+            {
+                userTasksDto.Add(_mapper.Map<TaskDto>(task));
+            }
+            return userTasksDto;
+        }
         
     }
 }
