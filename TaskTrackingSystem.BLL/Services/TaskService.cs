@@ -44,6 +44,7 @@ namespace TaskTrackingSystem.BLL.Services
                 taskTmp.Progress = "Assigned";
             }
             var createdTask =  await _database.Tasks.InsertAsync(taskTmp);
+            _database.Save();
             return _mapper.Map<TaskDto>(createdTask);
         }
 
@@ -57,6 +58,15 @@ namespace TaskTrackingSystem.BLL.Services
                 userTasksDto.Add(_mapper.Map<TaskDto>(task));
             }
             return userTasksDto;
+        }
+
+        public async Task<TaskDto> ChangeProgress(TaskDto task)
+        {
+            var taskFromDb = await _database.Tasks.GetFirstWhereAsync(t => t.Id == task.Id);
+            taskFromDb.Progress = task.Progress;
+            var updatedTask = await _database.Tasks.UpdateAsync(taskFromDb);
+            _database.Save();
+            return _mapper.Map<TaskDto>(updatedTask);
         }
         
     }

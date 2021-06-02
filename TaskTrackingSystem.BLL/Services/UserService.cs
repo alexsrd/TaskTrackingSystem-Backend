@@ -47,7 +47,6 @@ namespace TaskTrackingSystem.BLL.Services
             await _database.UserManager.RemoveFromRolesAsync(userFromDb, userRoles);
             await _database.UserManager.AddToRoleAsync(userFromDb,userFromClient.Role);
             var userDto =  await _database.Users.UpdateAsync(userFromDb);
-            _database.Save();
             return _mapper.Map<UserDto>(userDto);
         }
 

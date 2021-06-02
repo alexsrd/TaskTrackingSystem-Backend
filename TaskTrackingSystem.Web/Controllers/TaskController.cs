@@ -43,5 +43,18 @@ namespace TaskTrackingSystem.Web.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPut]
+        public async Task<ActionResult<TaskDto>> UpdateTask(TaskDto task)
+        {
+            try
+            {
+                return Ok(await _taskService.ChangeProgress(task));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

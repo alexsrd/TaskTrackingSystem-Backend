@@ -47,13 +47,7 @@ namespace TaskTrackingSystem.DAL.Repositories
         {
             try
             {
-                if (_context.Entry(entityToUpdate).State == EntityState.Detached)
-                {
-                    _dbSet.Attach(entityToUpdate);
-                }
-
-                _context.Entry(entityToUpdate).State = EntityState.Modified;
-                _context.ChangeTracker.AutoDetectChangesEnabled = false;
+                _context.Set<TEntity>().Update(entityToUpdate);
                 await _context.SaveChangesAsync();
                 return entityToUpdate;
             }
