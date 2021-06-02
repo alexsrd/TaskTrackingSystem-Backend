@@ -20,7 +20,7 @@ namespace TaskTrackingSystem.DAL.Repositories
         }
         public async Task<TEntity> GetFirstWhereAsync(Expression<Func<TEntity, bool>> match)
         {
-            return await _context.Set<TEntity>().FirstOrDefaultAsync(match);
+            return await _context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(match);
         }
 
         public async Task<List<TEntity>> FindAllByWhereAsync(Expression<Func<TEntity, bool>> match)

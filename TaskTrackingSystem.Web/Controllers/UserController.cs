@@ -37,7 +37,7 @@ namespace TaskTrackingSystem.Web.Controllers
         {
             try
             {
-                return Ok(await _userService.ChangeUserRole(user));
+                return Ok(await _userService.UpdateUser(user));
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize]
         [HttpGet("{projectId:int}")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetProjectUsers(int projectId)
         {
@@ -60,12 +60,12 @@ namespace TaskTrackingSystem.Web.Controllers
         }
         
         
-        [HttpPut("{projectId:int}")]
-        public async Task<ActionResult<UserDto>> AddToProject(int projectId, string email)
+        [HttpPut("addToProject/{projectId:int}")]
+        public async Task<ActionResult<UserDto>> AddToProject(int projectId,UserDto user)
         {
             try
             {
-                return Ok(await _userService.AddUserToProject(projectId, email));
+                return Ok(await _userService.AddUserToProject(projectId, user.Email));
             }
             catch (Exception ex)
             {

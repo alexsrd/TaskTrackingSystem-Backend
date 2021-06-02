@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
+using TaskTrackingSystem.BLL.Services.SmtpService;
 using TaskTrackingSystem.DAL;
 using TaskTrackingSystem.DAL.Entities;
 
@@ -13,10 +15,12 @@ namespace TaskTrackingSystem.BLL.Services
     {
         private readonly Mapper _mapper;
         private readonly IUnitOfWork _database;
+        private readonly IEmailService _emailService;
 
-        public UserService(IUnitOfWork database)
+        public UserService(IUnitOfWork database,IEmailService emailService)
         {
             _database = database;
+            _emailService = emailService;
             _mapper = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ApplicationUser, UserDto>().ReverseMap();
@@ -36,18 +40,25 @@ namespace TaskTrackingSystem.BLL.Services
             return userProfileDtos;
         }
         
-
-        public async Task<UserDto> ChangeUserRole(UserDto user)
+        public async Task<UserDto> UpdateUser(UserDto userDto)
         {
-            var userFromClient = _mapper.Map<ApplicationUser>(user);
-            var userFromDb = await _database.UserManager.FindByEmailAsync(user.Email);
-            userFromDb.Role = userFromClient.Role;
+            var user = await _database.UserManager.FindByEmailAsync(userDto.Email);
+            user = _mapper.Map(userDto, user);
+
+            var userRoles = await _database.UserManager.GetRolesAsync(user);
+            await _database.UserManager.RemoveFromRolesAsync(user, userRoles);
+            await _database.UserManager.AddToRoleAsync(user,userDto.Role);
+            var updatedUser =  await _database.Users.UpdateAsync(user);
             
-            var userRoles = await _database.UserManager.GetRolesAsync(userFromDb);
-            await _database.UserManager.RemoveFromRolesAsync(userFromDb, userRoles);
-            await _database.UserManager.AddToRoleAsync(userFromDb,userFromClient.Role);
-            var userDto =  await _database.Users.UpdateAsync(userFromDb);
-            return _mapper.Map<UserDto>(userDto);
+            var mailInfo = new EmailInfo
+            {
+                EmailTo = user.Email,
+                Subject = "Task Management System",
+                Body = $"Your role was changed from \"{userRoles.FirstOrDefault()}\" to \"{userDto.Role}\""
+            };
+            await _emailService.SendEmailAsync(mailInfo);
+            
+            return _mapper.Map<UserDto>(updatedUser);
         }
 
         public async Task<IEnumerable<UserDto>> GetProjectUsers(int projectId)
@@ -67,13 +78,21 @@ namespace TaskTrackingSystem.BLL.Services
         public async Task<UserDto> AddUserToProject(int projectId,string email)
         {
             var user = await _database.UserManager.FindByEmailAsync(email);
+
             if (user != null)
             {
                 var project = await _database.Projects.GetProjectWithUsers(projectId);
                 project.Users.Add(user);
                 await _database.Projects.UpdateAsync(project);
-            }
 
+                var mailInfo = new EmailInfo
+                {
+                    EmailTo = email,
+                    Subject = "Task Management System",
+                    Body = $"Access to project \"{project.Name}\" was granted to you."
+                };
+                await _emailService.SendEmailAsync(mailInfo);
+            }
             return _mapper.Map<UserDto>(user);
         }
     }

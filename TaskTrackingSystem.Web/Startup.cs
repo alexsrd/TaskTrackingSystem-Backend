@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using TaskTrackingSystem.BLL.Services;
 using TaskTrackingSystem.BLL.Services.Interfaces;
+using TaskTrackingSystem.BLL.Services.SmtpService;
 using TaskTrackingSystem.DAL;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;
@@ -59,6 +60,9 @@ namespace TaskTrackingSystem.Web
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IEmailService, EmailService>();
+            
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             services.AddSwaggerGen(c =>
             {

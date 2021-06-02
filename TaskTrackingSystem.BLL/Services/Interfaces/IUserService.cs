@@ -7,7 +7,7 @@ namespace TaskTrackingSystem.BLL.Services.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<UserDto>> GetUsersAsync();
-        Task<UserDto> ChangeUserRole(UserDto user);
+        Task<UserDto> UpdateUser(UserDto user);
 
         Task<IEnumerable<UserDto>> GetProjectUsers(int projectId);
         Task<UserDto> AddUserToProject(int projectId, string email);

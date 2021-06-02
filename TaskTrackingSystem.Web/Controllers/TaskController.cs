@@ -49,7 +49,7 @@ namespace TaskTrackingSystem.Web.Controllers
         {
             try
             {
-                return Ok(await _taskService.ChangeProgress(task));
+                return Ok(await _taskService.UpdateTask(task));
             }
             catch (Exception e)
             {
