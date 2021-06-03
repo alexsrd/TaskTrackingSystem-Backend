@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
@@ -70,6 +71,19 @@ namespace TaskTrackingSystem.Web.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{email}")]
+        public async Task<ActionResult<IdentityResult>> DeleteUser(string email)
+        {
+            try
+            {
+                return Ok(await _userService.DeleteUser(email));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
     }

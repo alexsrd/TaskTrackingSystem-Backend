@@ -95,5 +95,11 @@ namespace TaskTrackingSystem.BLL.Services
             }
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task<IdentityResult> DeleteUser(string email)
+        {
+            var user = await _database.UserManager.FindByEmailAsync(email);
+            return await _database.UserManager.DeleteAsync(user);
+        }
     }
 }
