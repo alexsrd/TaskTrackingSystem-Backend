@@ -10,5 +10,6 @@ namespace TaskTrackingSystem.BLL.Services.Interfaces
         Task<TaskDto> CreateTask(int projectId, TaskDto task);
         Task<IEnumerable<TaskDto>> GetUserTasksOnProject(string userId, int projectId);
         Task<TaskDto> UpdateTask(TaskDto task);
+        Task<TaskDto> DeleteTask(int id);
     }
 }

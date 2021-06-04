@@ -2,23 +2,28 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
 using TaskTrackingSystem.BLL.Services.SmtpService;
 using TaskTrackingSystem.DAL;
+using TaskTrackingSystem.DAL.Entities;
+using TaskTrackingSystem.DAL.Repositories.Interfaces;
 using Task = TaskTrackingSystem.DAL.Entities.Task;
 
 namespace TaskTrackingSystem.BLL.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly IUnitOfWork _database;
         private readonly Mapper _mapper;
         private readonly IEmailService _emailService;
-        public TaskService(IUnitOfWork database,IEmailService emailService)
+        private readonly ITaskRepository _taskRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TaskService(IUnitOfWork database,IEmailService emailService,UserManager<ApplicationUser> userManager)
         {
-            _database = database;
+            _userManager = userManager;
             _emailService = emailService;
+            _taskRepository = database.Tasks;
             _mapper = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TaskDto, Task>().ReverseMap();
@@ -27,7 +32,7 @@ namespace TaskTrackingSystem.BLL.Services
         
         public async Task<IEnumerable<TaskDto>> GetProjectTasksWithUsers(int id)
         {
-            var tasks = await _database.Tasks.GetProjectTasksWithUsers(id);
+            var tasks = await _taskRepository.GetProjectTasksWithUsers(id);
             var tasksDto = new List<TaskDto>();
             foreach (var task in tasks)
             {
@@ -38,30 +43,34 @@ namespace TaskTrackingSystem.BLL.Services
 
         public async Task<TaskDto> CreateTask(int projectId,TaskDto task)
         {
-            var user = await _database.UserManager.FindByEmailAsync(task.User.Email);
             var taskTmp = _mapper.Map<Task>(task);
             taskTmp.ProjectId = projectId;
-            taskTmp.User = user;
-            if (user != null)
+            taskTmp.Progress = "Not Assigned";
+            if (task.User.Email != null)
             {
-                taskTmp.Progress = "Assigned";
-                var mailInfo = new EmailInfo
+                var user = await _userManager.FindByEmailAsync(task.User.Email);
+                taskTmp.User = user;
+                if (user != null)
                 {
-                    EmailTo = user.Email,
-                    Subject = "Task Management System",
-                    Body = $"Task with name \"{task.Name}\" was assigned to you."
-                };
-                await _emailService.SendEmailAsync(mailInfo);
+                    taskTmp.Progress = "Assigned";
+                    var mailInfo = new EmailInfo
+                    {
+                        EmailTo = user.Email,
+                        Subject = "Task Management System",
+                        Body = $"Task with name \"{task.Name}\" was assigned to you."
+                    };
+                    await _emailService.SendEmailAsync(mailInfo);
+                }
             }
-            var createdTask =  await _database.Tasks.InsertAsync(taskTmp);
-            _database.Save();
+            
+            var createdTask =  await _taskRepository.InsertAsync(taskTmp);
 
             return _mapper.Map<TaskDto>(createdTask);
         }
 
         public async Task<IEnumerable<TaskDto>> GetUserTasksOnProject(string userId, int projectId)
         {
-            var tasks = await _database.Tasks.GetProjectTasksWithUsers(projectId);
+            var tasks = await _taskRepository.GetProjectTasksWithUsers(projectId);
             var userTasks = tasks.Where(t => t.UserId == userId);
             var userTasksDto = new List<TaskDto>();
             foreach (var task in userTasks)
@@ -73,11 +82,33 @@ namespace TaskTrackingSystem.BLL.Services
 
         public async Task<TaskDto> UpdateTask(TaskDto taskDto)
         {
-            var task = await _database.Tasks.GetFirstWhereAsync(t => t.Id == taskDto.Id);
+            var task = await _taskRepository
+                .GetFirstWhereAsync(t => t.Id == taskDto.Id);
             task = _mapper.Map(taskDto,task);
-            var updatedTask = await _database.Tasks.UpdateAsync(task);
-            _database.Save();
+            if (taskDto.User != null)
+            {
+                var user = await _userManager.FindByEmailAsync(taskDto.User.Email);
+                task.User = user;
+                if (user != null)
+                {
+                    var mailInfo = new EmailInfo
+                    {
+                        EmailTo = user.Email,
+                        Subject = "Task Management System",
+                        Body = $"Task with name \"{task.Name}\" was assigned to you."
+                    };
+                    await _emailService.SendEmailAsync(mailInfo);
+                }
+            }
+            var updatedTask = await _taskRepository.UpdateAsync(task);
             return _mapper.Map<TaskDto>(updatedTask);
+        }
+        
+        public async Task<TaskDto> DeleteTask(int id)
+        {
+            var task = await _taskRepository.GetFirstWhereAsync(t => t.Id == id);
+            _taskRepository.Delete(task);
+            return _mapper.Map<TaskDto>(task);
         }
         
     }

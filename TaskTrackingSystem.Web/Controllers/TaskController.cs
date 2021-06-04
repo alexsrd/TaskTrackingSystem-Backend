@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
@@ -18,18 +19,21 @@ namespace TaskTrackingSystem.Web.Controllers
             _taskService = taskService;
         }
         
+        [Authorize]
         [HttpGet("{projectId:int}")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetProjectTasks(int projectId)
         {
             return Ok(await _taskService.GetProjectTasksWithUsers(projectId));
         }
 
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost("{projectId:int}")]
         public async Task<ActionResult<TaskDto>> PostTask(int projectId,[FromBody]TaskDto task)
         {
             return Ok(await _taskService.CreateTask(projectId, task));
         }
 
+        [Authorize]
         [HttpGet("user-tasks/{projectId:int}")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetUserTasks(int projectId)
         {
@@ -44,6 +48,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<TaskDto>> UpdateTask(TaskDto task)
         {
@@ -54,6 +59,20 @@ namespace TaskTrackingSystem.Web.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize(Roles = "Manager,Admin")]
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteTask(int id)
+        {
+            try
+            {
+                return Ok(await _taskService.DeleteTask(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

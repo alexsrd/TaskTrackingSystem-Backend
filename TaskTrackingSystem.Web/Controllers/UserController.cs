@@ -33,6 +33,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<ActionResult<UserDto>> Update(UserDto user)
         {
@@ -60,7 +61,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
         
-        
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPut("addToProject/{projectId:int}")]
         public async Task<ActionResult<UserDto>> AddToProject(int projectId,UserDto user)
         {
@@ -74,6 +75,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{email}")]
         public async Task<ActionResult<IdentityResult>> DeleteUser(string email)
         {

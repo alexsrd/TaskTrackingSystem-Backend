@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -23,23 +24,44 @@ namespace TaskTrackingSystem.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<ProjectDto>> PostProject(ProjectDto project)
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            return Ok(await _projectService.CreateProject(userId,project));
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return Ok(await _projectService.CreateProject(userId,project));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [Authorize(Roles = "User,Manager,Admin")]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetUserProjects()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            return Ok(await _projectService.GetUserProjects(userId));
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return Ok(await _projectService.GetUserProjects(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         
-        [Authorize(Roles = "User,Manager,Admin")]
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProjectDto>> GetProject(int id)
         {
-            return Ok(await _projectService.GetProject(id));
+            try
+            {
+                return Ok(await _projectService.GetProject(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

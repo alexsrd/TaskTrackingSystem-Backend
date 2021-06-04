@@ -39,12 +39,17 @@ namespace TaskTrackingSystem.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Login(LoginDto loginUser)
         {
-            var resultToken = await _authenticationService.Login(loginUser);
-            if (resultToken != String.Empty)
+            try
             {
+                var resultToken = await _authenticationService.Login(loginUser);
                 return Ok(new {resultToken});
             }
-            return BadRequest("Email or password is incorrect");
+            catch (Exception ex)
+            {
+                return BadRequest("Email or password is incorrect");
+            }
+            
+            
         }
     }
 }

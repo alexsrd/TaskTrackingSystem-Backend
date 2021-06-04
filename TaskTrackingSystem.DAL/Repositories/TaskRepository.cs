@@ -24,5 +24,6 @@ namespace TaskTrackingSystem.DAL.Repositories
                 .Include(t => t.User).ToListAsync();
             return tasksWithUsers;
         }
+        
     }
 }

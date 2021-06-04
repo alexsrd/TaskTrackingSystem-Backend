@@ -47,7 +47,8 @@ namespace TaskTrackingSystem.DAL.Repositories
         {
             try
             {
-                _context.Set<TEntity>().Update(entityToUpdate);
+                _context.Entry(entityToUpdate).State = EntityState.Modified;
+                _context.ChangeTracker.AutoDetectChangesEnabled = false;
                 await _context.SaveChangesAsync();
                 return entityToUpdate;
             }
