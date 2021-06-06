@@ -2,6 +2,9 @@
 using TaskTrackingSystem.DAL.Entities;
 namespace TaskTrackingSystem.BLL.DTOs
 {
+    /// <summary>
+    /// User data transfer object
+    /// </summary>
     public class UserDto
     {
         public string Name { get; set; }

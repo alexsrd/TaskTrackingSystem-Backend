@@ -13,17 +13,20 @@ using Task = TaskTrackingSystem.DAL.Entities.Task;
 
 namespace TaskTrackingSystem.BLL.Services
 {
+    /// <summary>
+    /// Service for actions with Task entities
+    /// </summary>
     public class TaskService : ITaskService
     {
         private readonly Mapper _mapper;
         private readonly IEmailService _emailService;
-        private readonly ITaskRepository _taskRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUnitOfWork _database;
         public TaskService(IUnitOfWork database,IEmailService emailService,UserManager<ApplicationUser> userManager)
         {
+            _database = database;
             _userManager = userManager;
             _emailService = emailService;
-            _taskRepository = database.Tasks;
             _mapper = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TaskDto, Task>().ReverseMap();
@@ -32,7 +35,7 @@ namespace TaskTrackingSystem.BLL.Services
         
         public async Task<IEnumerable<TaskDto>> GetProjectTasksWithUsers(int id)
         {
-            var tasks = await _taskRepository.GetProjectTasksWithUsers(id);
+            var tasks = await _database.Tasks.GetProjectTasksWithUsers(id);
             var tasksDto = new List<TaskDto>();
             foreach (var task in tasks)
             {
@@ -63,14 +66,14 @@ namespace TaskTrackingSystem.BLL.Services
                 }
             }
             
-            var createdTask =  await _taskRepository.InsertAsync(taskTmp);
+            var createdTask =  await _database.Tasks.InsertAsync(taskTmp);
 
             return _mapper.Map<TaskDto>(createdTask);
         }
 
         public async Task<IEnumerable<TaskDto>> GetUserTasksOnProject(string userId, int projectId)
         {
-            var tasks = await _taskRepository.GetProjectTasksWithUsers(projectId);
+            var tasks = await _database.Tasks.GetProjectTasksWithUsers(projectId);
             var userTasks = tasks.Where(t => t.UserId == userId);
             var userTasksDto = new List<TaskDto>();
             foreach (var task in userTasks)
@@ -82,7 +85,7 @@ namespace TaskTrackingSystem.BLL.Services
 
         public async Task<TaskDto> UpdateTask(TaskDto taskDto)
         {
-            var task = await _taskRepository
+            var task = await _database.Tasks
                 .GetFirstWhereAsync(t => t.Id == taskDto.Id);
             task = _mapper.Map(taskDto,task);
             if (taskDto.User != null)
@@ -100,14 +103,15 @@ namespace TaskTrackingSystem.BLL.Services
                     await _emailService.SendEmailAsync(mailInfo);
                 }
             }
-            var updatedTask = await _taskRepository.UpdateAsync(task);
+            var updatedTask = await _database.Tasks.UpdateAsync(task);
             return _mapper.Map<TaskDto>(updatedTask);
         }
         
         public async Task<TaskDto> DeleteTask(int id)
         {
-            var task = await _taskRepository.GetFirstWhereAsync(t => t.Id == id);
-            _taskRepository.Delete(task);
+            var task = await _database.Tasks.GetFirstWhereAsync(t => t.Id == id);
+            _database.Tasks.Delete(task);
+            
             return _mapper.Map<TaskDto>(task);
         }
         

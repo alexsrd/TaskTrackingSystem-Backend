@@ -3,6 +3,9 @@ using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.BLL.DTOs
 {
+    /// <summary>
+    /// Task data transfer object
+    /// </summary>
     public class TaskDto
     {
         public int Id { get; set; }

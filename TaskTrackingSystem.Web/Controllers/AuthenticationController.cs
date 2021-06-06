@@ -6,6 +6,10 @@ using TaskTrackingSystem.BLL.Services.Interfaces;
 
 namespace TaskTrackingSystem.Web.Controllers
 {
+    /// <summary>
+    /// Authentication controller
+    /// Log In and Register methods
+    /// </summary>
     [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
@@ -46,7 +50,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Email or password is incorrect");
+                return BadRequest(ex.Message);
             }
             
             

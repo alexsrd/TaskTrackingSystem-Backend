@@ -4,11 +4,13 @@ using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.DAL.EF
 {
+    /// <summary>
+    /// Database context inherited from IdentityDbContext
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
         }
 
         public DbSet<Project> Projects { get; set; }

@@ -5,6 +5,9 @@ using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.DAL.EF
 {
+    /// <summary>
+    /// Class for adding initial data to database
+    /// </summary>
     public static class DatabaseSeed
     {
         public static void SeedDatabase(this ModelBuilder builder)

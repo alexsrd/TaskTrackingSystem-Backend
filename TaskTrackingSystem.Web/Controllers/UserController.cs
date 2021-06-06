@@ -9,6 +9,9 @@ using TaskTrackingSystem.BLL.Services.Interfaces;
 
 namespace TaskTrackingSystem.Web.Controllers
 {
+    /// <summary>
+    /// Controller for actions on User entities
+    /// </summary>
     [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
@@ -18,6 +21,7 @@ namespace TaskTrackingSystem.Web.Controllers
         {
             _userService = userService;
         }
+        
         
         [Authorize(Roles = "Admin,Manager")]
         [HttpGet]
@@ -32,7 +36,8 @@ namespace TaskTrackingSystem.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        
+        
         [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<ActionResult<UserDto>> Update(UserDto user)
@@ -47,7 +52,7 @@ namespace TaskTrackingSystem.Web.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "User,Manager,Admin")]
         [HttpGet("{projectId:int}")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetProjectUsers(int projectId)
         {

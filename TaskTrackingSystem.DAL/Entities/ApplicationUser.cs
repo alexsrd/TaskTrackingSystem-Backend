@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace TaskTrackingSystem.DAL.Entities
 {
+    /// <summary>
+    /// Entity for user
+    /// </summary>
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }

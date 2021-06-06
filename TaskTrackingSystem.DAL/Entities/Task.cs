@@ -2,6 +2,9 @@
 
 namespace TaskTrackingSystem.DAL.Entities
 {
+    /// <summary>
+    /// Entity of task
+    /// </summary>
     public class Task
     {
         public int Id { get; set; }

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;
 using TaskTrackingSystem.DAL.Repositories.Interfaces;
-using Task = System.Threading.Tasks.Task;
 
 namespace TaskTrackingSystem.DAL.Repositories
 {
+    /// <summary>
+    /// Repository for user entity
+    /// </summary>
     public class UserRepository : RepositoryBase<ApplicationUser>,IUserRepository
     {
         private readonly ApplicationDbContext _context;

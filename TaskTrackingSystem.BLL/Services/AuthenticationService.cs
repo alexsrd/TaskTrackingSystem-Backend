@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.BLL.DTOs;
 using TaskTrackingSystem.BLL.Services.Interfaces;
@@ -9,6 +8,9 @@ using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.BLL.Services
 {
+    /// <summary>
+    /// Service for registration and authorization
+    /// </summary>
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUnitOfWork _database;
@@ -58,7 +60,7 @@ namespace TaskTrackingSystem.BLL.Services
                 return _jwtService.GenerateJwtToken(user,userRoles);
             }
 
-            return String.Empty;
+            throw new Exception("Password or email is incorrect");
         }
     }
 }

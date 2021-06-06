@@ -4,6 +4,9 @@ using TaskTrackingSystem.BLL.DTOs;
 
 namespace TaskTrackingSystem.BLL.Services.Interfaces
 {
+    /// <summary>
+    /// Interface for TaskService
+    /// </summary>
     public interface ITaskService
     {
         Task<IEnumerable<TaskDto>> GetProjectTasksWithUsers(int projectId);

@@ -9,6 +9,9 @@ using TaskTrackingSystem.BLL.Services.Interfaces;
 
 namespace TaskTrackingSystem.Web.Controllers
 {
+    /// <summary>
+    /// Controller for actions on Task entities
+    /// </summary>
     [Route("api/tasks")]
     [ApiController]
     public class TaskController : ControllerBase

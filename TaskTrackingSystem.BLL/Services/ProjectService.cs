@@ -7,6 +7,7 @@ using TaskTrackingSystem.BLL.Services.Interfaces;
 using TaskTrackingSystem.BLL.Services.SmtpService;
 using TaskTrackingSystem.DAL;
 using TaskTrackingSystem.DAL.Entities;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskTrackingSystem.BLL.Services
 {
@@ -74,19 +75,21 @@ namespace TaskTrackingSystem.BLL.Services
             return projectDto;
         }
 
-        public async void DeleteProject(int projectId)
+        public async Task<ProjectDto> DeleteProject(int projectId)
         {
-            var projectDto = await _database.Projects.GetFirstWhereAsync(p => p.Id == projectId);
-            _database.Projects.Delete(_mapper.Map<Project>(projectDto));
+            var project = await _database.Projects.GetFirstWhereAsync(p => p.Id == projectId);
+            _database.Projects.Delete(project);
+            return _mapper.Map<ProjectDto>(project);
         }
 
-        public async void DeleteUserFromProject(int projectId,ApplicationUser user)
+        public async Task<ProjectDto> DeleteUserFromProject(int projectId,string email)
         {
-            var projectDto = await _database.Projects.GetFirstWhereAsync(p => p.Id == projectId);
-            var project = _mapper.Map<Project>(projectDto);
-            var appUser = await _database.UserManager.FindByEmailAsync(user.Email);
+            var project = await _database.Projects.GetProjectWithUsers(projectId);
+            var appUser = await _database.UserManager.FindByEmailAsync(email);
             project.Users.Remove(appUser);
             await _database.Projects.UpdateAsync(project);
+            _database.Save();
+            return _mapper.Map<ProjectDto>(project);
         }
         
     }

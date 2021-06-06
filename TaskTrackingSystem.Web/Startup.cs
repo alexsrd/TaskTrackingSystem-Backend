@@ -5,12 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using TaskTrackingSystem.BLL.Services;
-using TaskTrackingSystem.BLL.Services.Interfaces;
 using TaskTrackingSystem.BLL.Services.SmtpService;
-using TaskTrackingSystem.DAL;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;
 using TaskTrackingSystem.Web.AppStart;
@@ -39,6 +35,7 @@ namespace TaskTrackingSystem.Web
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+            
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -54,14 +51,8 @@ namespace TaskTrackingSystem.Web
             });
             
             services.AddJwtAuthentication(Configuration);
+            services.AddServices();
 
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IProjectService, ProjectService>();
-            services.AddTransient<ITaskService, TaskService>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IEmailService, EmailService>();
-            
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             services.AddSwaggerGen(c =>

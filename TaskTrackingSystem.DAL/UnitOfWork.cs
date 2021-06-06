@@ -8,6 +8,9 @@ using TaskTrackingSystem.DAL.Repositories.Interfaces;
 
 namespace TaskTrackingSystem.DAL
 {
+    /// <summary>
+    /// Implementation of UOW pattern
+    /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;

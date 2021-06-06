@@ -4,6 +4,9 @@ using TaskTrackingSystem.BLL.DTOs;
 
 namespace TaskTrackingSystem.BLL.Services.Interfaces
 {
+    /// <summary>
+    /// Interface for AuthenticationService
+    /// </summary>
     public interface IAuthenticationService
     {
         Task<IdentityResult> Register(RegisterDto registerUser);

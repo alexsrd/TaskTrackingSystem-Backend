@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TaskTrackingSystem.BLL.Services.Interfaces;
 using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.BLL.Services
 {
+    /// <summary>
+    /// Service for generation of JWT token based on user claims
+    /// </summary>
     public class JwtService : IJwtService
     {
         private readonly double _jwtExpireDays;

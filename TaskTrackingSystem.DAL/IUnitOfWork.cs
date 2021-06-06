@@ -6,6 +6,9 @@ using TaskTrackingSystem.DAL.Repositories.Interfaces;
 
 namespace TaskTrackingSystem.DAL
 {
+    /// <summary>
+    /// Interface for implementation of UOW pattern
+    /// </summary>
     public interface IUnitOfWork : IDisposable
     {
         UserManager<ApplicationUser> UserManager { get;}

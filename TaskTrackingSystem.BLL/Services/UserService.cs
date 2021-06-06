@@ -11,6 +11,9 @@ using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.BLL.Services
 {
+    /// <summary>
+    /// Service for actions with User entities
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly Mapper _mapper;
@@ -99,7 +102,9 @@ namespace TaskTrackingSystem.BLL.Services
         public async Task<IdentityResult> DeleteUser(string email)
         {
             var user = await _database.UserManager.FindByEmailAsync(email);
-            return await _database.UserManager.DeleteAsync(user);
+            await _database.UserManager.DeleteAsync(user);
+            _database.Save();
+            return IdentityResult.Success;
         }
     }
 }

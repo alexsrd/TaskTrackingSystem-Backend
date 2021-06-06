@@ -5,6 +5,9 @@ using TaskTrackingSystem.BLL.DTOs;
 
 namespace TaskTrackingSystem.BLL.Services.Interfaces
 {
+    /// <summary>
+    /// Interface for UserService
+    /// </summary>
     public interface IUserService
     {
         Task<IEnumerable<UserDto>> GetUsersAsync();

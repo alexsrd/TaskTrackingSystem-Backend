@@ -4,6 +4,9 @@ using TaskTrackingSystem.DAL.Entities;
 
 namespace TaskTrackingSystem.BLL.DTOs
 {
+    /// <summary>
+    /// Project data transfer object
+    /// </summary>
     public class ProjectDto
     {
         public int Id { get; set; }

@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;
 using TaskTrackingSystem.DAL.Repositories.Interfaces;
-using Task = System.Threading.Tasks.Task;
 
 namespace TaskTrackingSystem.DAL.Repositories
 {
+    /// <summary>
+    /// Project repository, inherited from RepositoryBase
+    /// </summary>
     public class ProjectRepository : RepositoryBase<Project>,IProjectRepository
     {
         private readonly ApplicationDbContext _context;
+        
+        /// <summary>
+        /// Constructor with injection of ApplicationDbContext
+        /// </summary>
+        /// <param name="context">Injected ApplicationDbContext object</param>
         public ProjectRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
@@ -27,6 +31,11 @@ namespace TaskTrackingSystem.DAL.Repositories
             return userProjects.ToList();
         }
 
+        /// <summary>
+        /// Get project by id with included ApplicationUser object
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns>Project entity object</returns>
         public async Task<Project> GetProjectWithUsers(int projectId)
         {
             return await _context.Projects.Include(p => p.Users).FirstOrDefaultAsync(p => p.Id == projectId);

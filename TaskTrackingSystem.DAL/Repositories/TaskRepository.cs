@@ -8,6 +8,9 @@ using Task = TaskTrackingSystem.DAL.Entities.Task;
 
 namespace TaskTrackingSystem.DAL.Repositories
 {
+    /// <summary>
+    /// Repository for Task entity
+    /// </summary>
     public class TaskRepository : RepositoryBase<Task>,ITaskRepository
     {
         private readonly ApplicationDbContext _context;
@@ -17,10 +20,15 @@ namespace TaskTrackingSystem.DAL.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Task>> GetProjectTasksWithUsers(int id)
+        /// <summary>
+        /// Returns all tasks including user entity, related to a project with a projectId
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Task>> GetProjectTasksWithUsers(int projectId)
         {
             var tasksWithUsers = await _context.Tasks
-                .Where(t => t.ProjectId == id)
+                .Where(t => t.ProjectId == projectId)
                 .Include(t => t.User).ToListAsync();
             return tasksWithUsers;
         }
