@@ -21,11 +21,10 @@ namespace TaskTrackingSystem.DAL.EF
                 .HasOne(p => p.Project)
                 .WithMany(t => t.Tasks)
                 .HasForeignKey(t => t.ProjectId);
-            
+
             builder.Entity<Task>()
                 .HasOne(p => p.User)
-                .WithMany(t => t.Tasks)
-                .HasForeignKey(t => t.UserId);
+                .WithMany(t => t.Tasks);
 
             builder.Entity<Project>()
                 .HasMany(p => p.Users)

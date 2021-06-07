@@ -13,7 +13,6 @@ namespace TaskTrackingSystem.DAL.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Progress { get; set; }
-        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }

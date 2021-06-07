@@ -33,7 +33,14 @@ namespace TaskTrackingSystem.Web.Controllers
         [HttpPost("{projectId:int}")]
         public async Task<ActionResult<TaskDto>> PostTask(int projectId,[FromBody]TaskDto task)
         {
-            return Ok(await _taskService.CreateTask(projectId, task));
+            try
+            {
+                return Ok(await _taskService.CreateTask(projectId, task));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize]

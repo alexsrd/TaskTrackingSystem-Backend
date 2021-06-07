@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.DAL.EF;
 using TaskTrackingSystem.DAL.Entities;

@@ -49,6 +49,7 @@ namespace TaskTrackingSystem.BLL.Services
             var taskTmp = _mapper.Map<Task>(task);
             taskTmp.ProjectId = projectId;
             taskTmp.Progress = "Not Assigned";
+            taskTmp.User = null;
             if (task.User.Email != null)
             {
                 var user = await _userManager.FindByEmailAsync(task.User.Email);
@@ -74,7 +75,7 @@ namespace TaskTrackingSystem.BLL.Services
         public async Task<IEnumerable<TaskDto>> GetUserTasksOnProject(string userId, int projectId)
         {
             var tasks = await _database.Tasks.GetProjectTasksWithUsers(projectId);
-            var userTasks = tasks.Where(t => t.UserId == userId);
+            var userTasks = tasks.Where(t => t.User.Id == userId);
             var userTasksDto = new List<TaskDto>();
             foreach (var task in userTasks)
             {
